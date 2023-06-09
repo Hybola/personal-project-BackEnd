@@ -23,13 +23,7 @@ module.exports = (sequelize, DataTypes) => {
           isEmail: true,
         },
       },
-      mobile: {
-        type: DataTypes.STRING,
-        unique: true,
-        validate: {
-          is: /^[0-9]{10}$/,
-        },
-      },
+  
       password: {
         type: DataTypes.STRING,
         allowNull: false,
