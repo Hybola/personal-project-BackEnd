@@ -9,8 +9,11 @@ exports.getUserByEmail = async (email) => {
 };
 exports.createUser = async (user) => User.create(user);
 
-exports.getUserById = async (userId) =>
-  User.findAll({
-    where: { id: userId },
-    attributes: { exclude: ["password"] },
-  });
+exports.getUserById=async(userId)=>User.findByPk(userId)
+
+////==== below code result in "jwt malformed" response
+// exports.getUserById = async (userId) =>
+//   User.findOne({
+//     where: { id: userId },
+//     attributes: { exclude: ["password"] },
+//   });

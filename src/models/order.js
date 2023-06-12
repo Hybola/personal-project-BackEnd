@@ -23,11 +23,11 @@ module.exports = (sequelize, DataTypes) => {
   Order.associate = (models) => {
     Order.belongsTo(models.User, {
       foreignKey: { name: "userId", allowNull: false },
-      onDelete: "RESTRICT",
+      onDelete:  "CASCADE",
     });
     Order.hasMany(models.OrderItem, {
       foreignKey: { name: "orderId", allowNull: false },
-      onDelete: "RESTRICT",
+      onDelete:  "CASCADE",
     });
   };
 

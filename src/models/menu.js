@@ -25,11 +25,15 @@ module.exports = (sequelize, DataTypes) => {
   Menu.associate = (models) => {
     Menu.belongsTo(models.Category, {
       foreignKey: { name: "categoryId", allowNull: false },
-      onDelete: "RESTRICT",
+      onDelete:  "CASCADE",
+    });
+    Menu.belongsTo(models.User, {
+      foreignKey: { name: "userId", allowNull: false },
+      onDelete: "CASCADE",
     });
     Menu.hasMany(models.OrderItem, {
       foreignKey: { name: "menuId", allowNull: false },
-      onDelete: "RESTRICT",
+      onDelete:  "CASCADE",
     });
   };
 

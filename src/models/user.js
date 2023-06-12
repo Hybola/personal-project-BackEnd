@@ -36,12 +36,12 @@ module.exports = (sequelize, DataTypes) => {
   User.associate = (models) => {
     User.hasMany(models.Order, {
       foreignKey: { name: "userId", allowNull: false },
-      onDelete: "RESTRICT",
+      onDelete:  "CASCADE",
     });
 
-    User.hasMany(models.Category, {
+    User.hasMany(models.Menu, {
       foreignKey: { name: "userId", allowNull: false },
-      onDelete: "RESTRICT",
+      onDelete:  "CASCADE",
     });
   };
 

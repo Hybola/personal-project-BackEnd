@@ -26,11 +26,11 @@ module.exports = (sequelize, DataTypes) => {
   OrderItem.associate = (models) => {
     OrderItem.belongsTo(models.Order, {
       foreignKey: { name: "orderId", allowNull: false },
-      onDelete: "RESTRICT",
+      onDelete:  "CASCADE",
     });
     OrderItem.belongsTo(models.Menu, {
       foreignKey: { name: "menuId", allowNull: false },
-      onDelete: "RESTRICT",
+      onDelete:  "CASCADE",
     });
   };
   return OrderItem;
