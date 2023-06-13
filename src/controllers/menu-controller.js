@@ -38,12 +38,14 @@ exports.createMenu = async (req, res, next) => {
 };
 exports.editMenu = async (req, res, next) => {
   try {
-    const setMenu = req.body;
-    setMenu["userId"] = req.user.id;
-    const { menuId } = req.params;
+    const updateMenu = req.body;
+    updateMenu["userId"] = req.user.id;
+    // const { menuId } = req.params;
+    updateMenu["id"] = req.params;
 
-    const result = await menuService.editMenu(setMenu, menuId);
-    res.status(200).json({ newMenu: result });
+    const result = await menuService.editMenu(updateMenu, updateMenu.id);
+    res.status(200).json({ updatedMenu: updateMenu });
+  
   } catch (err) {
     next(err);
   }
@@ -52,7 +54,8 @@ exports.deleteMenu = async (req, res, next) => {
   try {
     const { menuId } = req.params;
     const result = await menuService.deleteMenu(+menuId);
-    res.status(200).json({ message: "The menu was deleted" });
+    console.log(result);
+    res.status(200).json({ message: `menu id ${menuId} was deleted` });
   } catch (err) {
     next(err);
   }
