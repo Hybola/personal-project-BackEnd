@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   Category.associate = (models) => {
     Category.hasMany(models.Menu, {
       foreignKey: { name: "categoryId", allowNull: false },
-      onDelete: "CASCADE",
+      onDelete: "RESTRICT",
     });
   };
 

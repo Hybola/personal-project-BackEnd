@@ -6,7 +6,10 @@ const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 
 const authRoute = require("./routes/auth-route");
-const menuRoute=require("./routes/menuRoute")
+const menuRoute=require("./routes/menu-route")
+const orderRoute=require("./routes/order-route")
+const categoryRoute=require("./routes/category-route")
+
 
 const notFoundMiddleware = require("./middlewares/not-found.js");
 const errorMiddleware = require("./middlewares/error");
@@ -30,8 +33,9 @@ app.use(express.json());
 
 app.use("/auth", authRoute);
 app.use("/menu",authenticate, menuRoute);
-// app.use("/order")
-// app.use("/category")
+app.use("/order",authenticate, orderRoute)
+app.use("/category",categoryRoute)
+
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
