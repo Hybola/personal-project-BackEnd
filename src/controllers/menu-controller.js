@@ -46,15 +46,15 @@ exports.editMenu = async (req, res, next) => {
     updateMenu["userId"] = +req.user.id;
     updateMenu["id"] = +req.params.menuId;
     const oldMenu = await menuService.getMenu(updateMenu.id); //หยิบตัว menu เดิมมาเพื่อเอา path ของ image
-    updateMenu["image"]=oldMenu.image; //ให้ image มีค่าเท่ากับ url เดิมก่อน เผื่อกรณีไม่ได้ส่งมาใน request
-    
+    updateMenu["image"] = oldMenu.image; //ให้ image มีค่าเท่ากับ url เดิมก่อน เผื่อกรณีไม่ได้ส่งมาใน request
+
     if (req.file) {
       const uploadResult = await uploadService.upload(req.file.path);
-      const deleteResult = await uploadService.delete(oldMenu.image); //ลบไฟล์เก่าที่อยู่ใน cloudinary ออก
+      if (oldMenu.image) await uploadService.delete(oldMenu.image); //ลบไฟล์เก่าที่อยู่ใน cloudinary ออก
       updateMenu.image = uploadResult.secure_url;
     }
     const result = await menuService.editMenu(updateMenu, updateMenu.id);
-    res.status(200).json({ updatedMenu: result });
+    res.status(200).json({ updatedMenu: updateMenu});
   } catch (err) {
     next(err);
   } finally {
