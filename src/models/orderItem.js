@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     OrderItem.belongsTo(models.Menu, {
       foreignKey: { name: "menuId", allowNull: false },
-      onDelete:  "CASCADE",
+      onDelete:  "RESTRICT",
     });
   };
   return OrderItem;
