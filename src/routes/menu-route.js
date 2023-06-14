@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get("/", menuController.fetchMenu);
 router.post("/create", upload.single("image"), menuController.createMenu);
-router.patch("/:menuId", menuController.editMenu);
+router.patch("/:menuId",upload.single("image"), menuController.editMenu);
 router.delete("/:menuId", menuController.deleteMenu);
 
 module.exports = router;

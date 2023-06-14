@@ -2,9 +2,11 @@ const fs = require("fs");
 const menuService = require("../services/menu-service");
 const uploadService = require("../services/upload-service");
 const createError = require("../utils/create-error");
+const { config } = require("dotenv");
 
 exports.fetchMenu = async (req, res, next) => {
   try {
+    console.log("req.user.id====>> ", req.user.id);
     const allMenu = await menuService.fetchMenu(req.user.id);
     res.status(200).json({ allMenu });
   } catch (err) {
@@ -38,16 +40,26 @@ exports.createMenu = async (req, res, next) => {
 };
 exports.editMenu = async (req, res, next) => {
   try {
+    // if (!req.body.name || !req.body.price)
+    //   createError("name or price is required", 400);
     const updateMenu = req.body;
-    updateMenu["userId"] = req.user.id;
-    // const { menuId } = req.params;
-    updateMenu["id"] = req.params;
-
+    updateMenu["userId"] = +req.user.id;
+    updateMenu["id"] = +req.params.menuId;
+    const oldMenu = await menuService.getMenu(updateMenu.id); //หยิบตัว menu เดิมมาเพื่อเอา path ของ image
+    updateMenu["image"]=oldMenu.image; //ให้ image มีค่าเท่ากับ url เดิมก่อน เผื่อกรณีไม่ได้ส่งมาใน request
+    
+    if (req.file) {
+      const uploadResult = await uploadService.upload(req.file.path);
+      const deleteResult = await uploadService.delete(oldMenu.image); //ลบไฟล์เก่าที่อยู่ใน cloudinary ออก
+      updateMenu.image = uploadResult.secure_url;
+    }
     const result = await menuService.editMenu(updateMenu, updateMenu.id);
-    res.status(200).json({ updatedMenu: updateMenu });
-  
+    res.status(200).json({ updatedMenu: result });
   } catch (err) {
     next(err);
+  } finally {
+    ////====== ลบไฟล์ออกจาก local storage
+    if (req.file) fs.unlinkSync(req.file.path);
   }
 };
 exports.deleteMenu = async (req, res, next) => {
